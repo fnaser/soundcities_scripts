@@ -48,9 +48,11 @@ def download_and_convert(snd, name):
     if not os.path.exists(name):
         os.makedirs(name)
 
+    # get mp3
     os.chdir(name)
     download_file(tmp_url)
 
+    # convert it to wav
     file_name = tmp_url[tmp_url.rfind('/')+1:tmp_url.rfind('.')]
     subprocess.call(['ffmpeg', '-i', name+"/"+file_name + '.mp3', name+"/"+file_name + '.wav'])
 
@@ -58,22 +60,23 @@ def download_and_convert(snd, name):
 if __name__ == '__main__':
 
     url_feeds = "http://www.soundcities.com/global/xml.php"
-
-    # sound data base
     sdb_file_name = "soundcities_feeds.xml"
+    download_dir = "/home/fnaser/Music/"
+
     sdb = ET.parse(sdb_file_name).getroot()
 
     print "/////////////////////////////////////////////////////////////////"
 
     for snd in sdb.iter('snd'):
 
-        if "motorbike" in snd.find('description').text or "motor bike" in snd.find('description').text:
+        #if "motorbike" in snd.find('description').text or "motor bike" in snd.find('description').text:
+        #    download_and_convert(snd, download_dir + "motorbike")
 
-            download_and_convert(snd, "/home/fnaser/Music/motorbike")
+        #if "horn" in snd.find('description').text:
+        #    download_and_convert(snd, download_dir + "horn")
 
-        if "horn" in snd.find('description').text:
-
-            download_and_convert(snd, "/home/fnaser/Music/horn")
+        if "traffic" in snd.find('description').text:
+            download_and_convert(snd, download_dir + "traffic")
 
     print "/////////////////////////////////////////////////////////////////"
 
