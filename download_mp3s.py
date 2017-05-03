@@ -69,11 +69,11 @@ if __name__ == '__main__':
 
     for snd in sdb.iter('snd'):
 
-        #if "motorbike" in snd.find('description').text or "motor bike" in snd.find('description').text:
-        #    download_and_convert(snd, download_dir + "motorbike")
+        if "motorbike" in snd.find('description').text or "motor bike" in snd.find('description').text:
+            download_and_convert(snd, download_dir + "motorbike")
 
-        #if "horn" in snd.find('description').text:
-        #    download_and_convert(snd, download_dir + "horn")
+        if "horn" in snd.find('description').text:
+            download_and_convert(snd, download_dir + "horn")
 
         if "traffic" in snd.find('description').text:
             download_and_convert(snd, download_dir + "traffic")
