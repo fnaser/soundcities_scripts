@@ -2,6 +2,7 @@ import urllib2
 import xml.etree.ElementTree as ET
 import urllib2
 import os
+import subprocess
 
 # http://stackoverflow.com/questions/22676/how-do-i-download-a-file-over-http-using-python
 
@@ -38,6 +39,22 @@ def download_file(url):
     print file_name
 
 
+def download_and_convert(snd, name):
+    tmp_url = snd.find('file').text
+
+    print snd.find('description').text
+    print tmp_url
+
+    if not os.path.exists(name):
+        os.makedirs(name)
+
+    os.chdir(name)
+    download_file(tmp_url)
+
+    file_name = tmp_url[tmp_url.rfind('/')+1:tmp_url.rfind('.')]
+    subprocess.call(['ffmpeg', '-i', name+"/"+file_name + '.mp3', name+"/"+file_name + '.wav'])
+
+
 if __name__ == '__main__':
 
     url_feeds = "http://www.soundcities.com/global/xml.php"
@@ -51,22 +68,12 @@ if __name__ == '__main__':
     for snd in sdb.iter('snd'):
 
         if "motorbike" in snd.find('description').text or "motor bike" in snd.find('description').text:
-            print snd.find('description').text
-            print snd.find('file').text
-            if not os.path.exists("motorbike"):
-                os.makedirs("motorbike")
-            os.chdir("motorbike")
-            download_file(snd.find('file').text)
-            os.chdir("..")
+
+            download_and_convert(snd, "/home/fnaser/Music/motorbike")
 
         if "horn" in snd.find('description').text:
-            print snd.find('description').text
-            print snd.find('file').text
-            if not os.path.exists("horn"):
-                os.makedirs("horn")
-            os.chdir("horn")
-            download_file(snd.find('file').text)
-            os.chdir("..")
+
+            download_and_convert(snd, "/home/fnaser/Music/horn")
 
     print "/////////////////////////////////////////////////////////////////"
 
